@@ -10,8 +10,6 @@ import platform
 
 class DDNSClient:
     def __init__(self, google_username, google_password, client_domain_name, server_domain_name):
-        # configuration for different reporter from google domain
-        # system variables
         self.__google_username = google_username
         self.__google_password = google_password
         self._my_domain = client_domain_name
@@ -25,6 +23,7 @@ class DDNSClient:
         self._get_ip_website = "https://checkip.amazonaws.com"
         self._can_connect = 0
         self.__ip = ""
+        print(self.__get_current_ipv6())
 
     def _ping_server_thread(self):
         thread_refresh = threading.Thread(target=self.__ping_server, name="t1", args=())
