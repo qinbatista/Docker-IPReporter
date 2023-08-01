@@ -16,13 +16,13 @@ class DDNSClient:
         # configuration for different reporter from google domain
         self.__google_username = google_username
         self.__google_password = google_password
-        self._my_domain = "client.example.com"
+        self._my_domain = client_domain_name
 
         # system variables
         # https://domains.google.com/checkip banned by Chinese GFW
         self.__file_path = "/root/logs.txt"
         # self.__file_path = "/Users/qin/Desktop/logs.txt"
-        self.__target_server = "server.example.com"
+        self.__target_server = server_domain_name
         self._get_ip_website = "https://checkip.amazonaws.com"
         self._can_connect = 0
         self.__ip = ""
