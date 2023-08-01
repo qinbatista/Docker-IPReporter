@@ -2,14 +2,12 @@ from math import fabs
 import os
 import time
 import requests
-import base64
 import threading
-import uuid
 import subprocess
 from socket import *
 from datetime import datetime
-import sys
 import platform
+import socket
 
 class DDNSClient:
     def __init__(self, google_username, google_password, client_domain_name, server_domain_name):
@@ -87,8 +85,8 @@ class DDNSClient:
             self.__log(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}][get_host_ip]Error: {str(e)}")
         return self.__ip
 
-
 if __name__ == '__main__':
+    print(socket.getaddrinfo(socket.gethostname(), None, socket.AF_INET6)[1][4][0])
     google_username = os.environ["GOOGLE_USERNAME"]
     google_password = os.environ["GOOGLE_PASSWORD"]
     client_domain_name = os.environ["CLIENT_DOMAIN_NAME"]
