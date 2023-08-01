@@ -20,6 +20,7 @@ class DDNSClient:
         self._my_domain = client_domain_name
         self.__target_server = server_domain_name
         self.__file_path = "/root/logs.txt"
+        print(f"google_username={google_username},google_password={google_password},client_domain_name={client_domain_name}, server_domain_name={server_domain_name}")
         if platform.system() == 'Darwin': self.__file_path = "/Users/qin/Desktop/logs.txt"
 
         # https://domains.google.com/checkip banned by Chinese GFW
