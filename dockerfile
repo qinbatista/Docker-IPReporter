@@ -18,4 +18,4 @@ RUN apt-get -y install iputils-ping
 RUN pip3 install -r requirements.txt
 
 WORKDIR /root
-CMD ["python3", "/IPReporter.py", "$GOOGLE_USERNAME", "$GOOGLE_PASSWORD", "$CLIENT_DOMAIN_NAME", "$SERVER_DOMAIN_NAME"]
+CMD ["python3", "/IPReporter.py", $GOOGLE_USERNAME, $GOOGLE_PASSWORD, $CLIENT_DOMAIN_NAME, $SERVER_DOMAIN_NAME]
