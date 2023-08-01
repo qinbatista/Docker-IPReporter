@@ -7,8 +7,6 @@ import subprocess
 from socket import *
 from datetime import datetime
 import platform
-import socket
-
 
 class DDNSClient:
     def __init__(self, google_username, google_password, client_domain_name, server_domain_name):
