@@ -60,12 +60,14 @@ class DDNSClient:
         udpClient = socket(AF_INET, SOCK_DGRAM)
         while True:
             try:
-                self.__log(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}][update_this_server]IP: {gethostbyname(self.__target_server)}")
+                self.__log(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}][update_this_server]IP: {self.__target_server}")
+                self.__log(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}][update_this_server]IP: {(self.__target_server)}")
                 this_docker_ip = self.__get_host_ip()
                 udpClient.sendto((f"{gethostbyname(self.__target_server)},{str(self._can_connect)},{self.__google_username}:{self.__google_password},{self._my_domain}").encode(encoding="utf-8"), (self.__target_server, 7171))
                 self.__log(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}][update_this_server]Updated to server={gethostbyname(self.__target_server)}, {self.__target_server}: reachable={self._can_connect} message: {this_docker_ip},{str(self._can_connect)},{self.__google_username}:{self.__google_password},{self._my_domain}")
                 time.sleep(60)
             except Exception as e:
+                time.sleep(60)
                 self.__log(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}][update_this_server]Error: {str(e)}")
 
     def __log(self, result):
