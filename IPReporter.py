@@ -89,11 +89,10 @@ class DDNSClient:
 
 
 if __name__ == '__main__':
-    if len(sys.argv) >= 4:
-        google_username = sys.argv[0]
-        google_password = sys.argv[1]
-        client_domain_name = sys.argv[2]
-        server_domain_name = sys.argv[3]
+    google_username = os.environ["GOOGLE_USERNAME"]
+    google_password = os.environ["GOOGLE_PASSWORD"]
+    client_domain_name = os.environ["CLIENT_DOMAIN_NAME"]
+    server_domain_name = os.environ["SERVER_DOMAIN_NAME"]
 
     ss = DDNSClient(google_username, google_password, client_domain_name, server_domain_name)
     ss._ping_server_thread()
