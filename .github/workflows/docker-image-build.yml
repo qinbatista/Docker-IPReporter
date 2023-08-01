@@ -22,4 +22,4 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Push
-        run: docker push qinbatista/ipreporter
+        run: docker push qinbatista/ipreporter"${{ vars.CLIENT_DOMAIN_NAME }}"
