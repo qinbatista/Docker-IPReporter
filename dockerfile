@@ -1,7 +1,5 @@
 FROM python:3-slim
 
-
-
 ARG google_username
 ARG google_password
 ARG client_domain_name
