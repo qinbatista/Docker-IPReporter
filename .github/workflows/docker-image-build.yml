@@ -7,7 +7,7 @@ on:
     branches: ["master"]
 
 jobs:
-  build:
+  build_timov4:
     runs-on: ubuntu-latest
     environment: DockerLogin
     steps:
@@ -24,7 +24,7 @@ jobs:
       - name: Push
         run: docker push qinbatista/ipreporter${{ vars.CLIENT_DOMAIN_NAME }}
 
-  buildOther:
+  build_cq:
     runs-on: ubuntu-latest
     environment: CQ
     steps:
