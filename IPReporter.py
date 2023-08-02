@@ -63,7 +63,6 @@ class DDNSClient:
                 self.__log(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}][update_this_server]IP: {(self.__target_server)}")
                 this_docker_ipv4 = self.__get_current_ipv4()
                 this_docker_ipv6 = self.__get_current_ipv6()
-                # print(f"this_docker_ipv4={this_docker_ipv4},this_docker_ipv6={this_docker_ipv6}")
                 udpClient.sendto((f"{gethostbyname(self.__target_server)},{str(self._can_connect)},{self.__google_username}:{self.__google_password},{self._my_domain}").encode(encoding="utf-8"), (self.__target_server, 7171))
                 self.__log(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}][update_this_server]Updated to server={gethostbyname(self.__target_server)}, {self.__target_server}: reachable={self._can_connect} message: {this_docker_ipv4},{str(self._can_connect)},{self.__google_username}:{self.__google_password},{self._my_domain}")
                 time.sleep(60)
