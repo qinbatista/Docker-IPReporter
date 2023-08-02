@@ -17,7 +17,7 @@ class DDNSClient:
         self.__target_server = server_domain_name
         self.__file_path = "/root/logs.txt"
         print(f"google_username={google_username},google_password={google_password},client_domain_name={client_domain_name}, server_domain_name={server_domain_name}")
-        print(f"this_docker_ipv4={self.__get_host_ip()},this_docker_ipv6={self.__get_current_ipv6()}")
+        print(f"this_docker_ipv4={self.__get_current_ipv4()},this_docker_ipv6={self.__get_current_ipv6()}")
         if platform.system() == 'Darwin':
             self.__file_path = "/Users/qin/Desktop/logs.txt"
 
@@ -61,7 +61,7 @@ class DDNSClient:
             try:
                 self.__log(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}][update_this_server]IP: {self.__target_server}")
                 self.__log(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}][update_this_server]IP: {(self.__target_server)}")
-                this_docker_ipv4 = self.__get_host_ip()
+                this_docker_ipv4 = self.__get_current_ipv4()
                 this_docker_ipv6 = self.__get_current_ipv6()
                 # print(f"this_docker_ipv4={this_docker_ipv4},this_docker_ipv6={this_docker_ipv6}")
                 udpClient.sendto((f"{gethostbyname(self.__target_server)},{str(self._can_connect)},{self.__google_username}:{self.__google_password},{self._my_domain}").encode(encoding="utf-8"), (self.__target_server, 7171))
@@ -79,7 +79,7 @@ class DDNSClient:
                 content = f.readlines()
                 os.remove(self.__file_path)
 
-    def __get_host_ip(self):
+    def __get_current_ipv4(self):
         self.__ip = ""
         try:
             self.__ip = requests.get(self._get_ip_website).text.strip()
