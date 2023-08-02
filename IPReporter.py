@@ -16,8 +16,8 @@ class DDNSClient:
         self.__target_server = server_domain_name
         self.__file_path = "/root/logs.txt"
         print(f"google_username={google_username},google_password={google_password},client_domain_name={client_domain_name}, server_domain_name={server_domain_name}")
-        if platform.system() == 'Darwin':
-            self.__file_path = "/Users/qin/Desktop/logs.txt"
+        print(f"this_docker_ipv4={self.__get_host_ip()},this_docker_ipv6={self.__get_current_ipv6()}")
+        if platform.system() == 'Darwin':self.__file_path = "/Users/qin/Desktop/logs.txt"
 
         # https://domains.google.com/checkip banned by Chinese GFW
         self._get_ip_website = "https://checkip.amazonaws.com"
@@ -62,10 +62,10 @@ class DDNSClient:
                 self.__log(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}][update_this_server]IP: {(self.__target_server)}")
                 this_docker_ipv4 = self.__get_host_ip()
                 this_docker_ipv6 = self.__get_current_ipv6()
-                print(f"this_docker_ipv4={this_docker_ipv4},this_docker_ipv6={this_docker_ipv6}")
+                # print(f"this_docker_ipv4={this_docker_ipv4},this_docker_ipv6={this_docker_ipv6}")
                 udpClient.sendto((f"{gethostbyname(self.__target_server)},{str(self._can_connect)},{self.__google_username}:{self.__google_password},{self._my_domain}").encode(
                     encoding="utf-8"), (self.__target_server, 7171))
-                self.__log(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}][update_this_server]Updated to server={gethostbyname(self.__target_server)}, {self.__target_server}: reachable={self._can_connect} message: {this_docker_ipv6},{str(self._can_connect)},{self.__google_username}:{self.__google_password},{self._my_domain}")
+                self.__log(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}][update_this_server]Updated to server={gethostbyname(self.__target_server)}, {self.__target_server}: reachable={self._can_connect} message: {this_docker_ipv4},{str(self._can_connect)},{self.__google_username}:{self.__google_password},{self._my_domain}")
                 time.sleep(60)
             except Exception as e:
                 time.sleep(60)
@@ -96,16 +96,10 @@ class DDNSClient:
 
 
 if __name__ == '__main__':
-    # google_username = os.environ["GOOGLE_USERNAME"]
-    # google_password = os.environ["GOOGLE_PASSWORD"]
-    # client_domain_name = os.environ["CLIENT_DOMAIN_NAME"]
-    # server_domain_name = os.environ["SERVER_DOMAIN_NAME"]
-    import sys
-    if len(sys.argv) >= 4:
-        google_username = sys.argv[0]
-        google_password = sys.argv[1]
-        client_domain_name = sys.argv[2]
-        server_domain_name = sys.argv[3]
+    google_username = os.environ["GOOGLE_USERNAME"]
+    google_password = os.environ["GOOGLE_PASSWORD"]
+    client_domain_name = os.environ["CLIENT_DOMAIN_NAME"]
+    server_domain_name = os.environ["SERVER_DOMAIN_NAME"]
 
     ss = DDNSClient(google_username, google_password, client_domain_name, server_domain_name)
     ss._ping_server_thread()
