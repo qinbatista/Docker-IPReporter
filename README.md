@@ -1,6 +1,6 @@
 # Start command
 A docker which send your IP to Google domain
 ```
-docker run -itd --restart=always qinbatista/ipreporter
+docker pull qinbatista/ipreportertest && docker run -itd --restart=always qinbatista/ipreportertest
 ```
 # Docker-PingList

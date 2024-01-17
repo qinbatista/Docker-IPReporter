@@ -15,17 +15,14 @@ class DDNSClient:
         self.__google_password = google_password
         self._my_domain = client_domain_name
         self.__target_server = server_domain_name
-        self.__file_path = "/root/logs.txt"
-        print(f"google_username={google_username},google_password={google_password},client_domain_name={client_domain_name}, server_domain_name={server_domain_name}")
-        print(f"this_docker_ipv4={self.__get_current_ipv4()},this_docker_ipv6={self.__get_current_ipv6()}")
-        if platform.system() == 'Darwin':
-            self.__file_path = "/Users/qin/Desktop/logs.txt"
+        self.__file_path = "/ipreporter.txt"
 
         # https://domains.google.com/checkip banned by Chinese GFW
-        self._get_ip_website = "https://checkip.amazonaws.com"
+        self._get_ipv4_website = "https://checkip.amazonaws.com"
+        self._get_ipv6_website = "https://api6.ipify.org"
         self._can_connect = 0
-        self.__ip = ""
-        print(self.__get_current_ipv6())
+        self.__log(f"google_username={google_username},google_password={google_password},client_domain_name={client_domain_name}, server_domain_name={server_domain_name}")
+        self.__log(f"this_docker_ipv4={self.__get_current_ipv4()},this_docker_ipv6={self.__get_current_ipv6()}")
 
     def _ping_server_thread(self):
         thread_refresh = threading.Thread(target=self.__ping_server, name="t1", args=())
@@ -40,11 +37,10 @@ class DDNSClient:
 
                 # Check the result of the ping command
                 if process.returncode == 0:
-                    self._can_connect = 1
-                    self.__log(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}][ping_server][ping -c 1 {self.__target_server}]{self._can_connect}")
+                    self._can_connect = 1# can reach the server
                 else:
-                    self._can_connect = 0
-                    self.__log(f"[{datetime.now().strftime('^%Y-%m-%d %H:%M:%S')}][ping_server][ping -c 1 {self.__target_server}]{self._can_connect}")
+                    self._can_connect = 0# cannot reach the server
+                self.__log(f"[{datetime.now().strftime('^%Y-%m-%d %H:%M:%S')}][ping_server][ping -c 1 {self.__target_server}]{self._can_connect}")
 
                 # Wait for 1 minute before pinging again
                 time.sleep(60)
@@ -78,20 +74,36 @@ class DDNSClient:
                 content = f.readlines()
                 os.remove(self.__file_path)
 
-    def __get_current_ipv4(self):
-        self.__ip = ""
-        try:
-            self.__ip = requests.get(self._get_ip_website).text.strip()
-        except Exception as e:
-            self.__log(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}][get_host_ip]Error: {str(e)}")
-        return self.__ip
 
     def __get_current_ipv6(self):
-        """Get the current external IPv6 address or return None if no connection to the IPify service is possible"""
         try:
-            return requests.get("https://api6.ipify.org", timeout=5).text
-        except requests.exceptions.ConnectionError as ex:
-            return None
+            response = requests.get(self._get_ipv6_website, timeout=5)
+            response.raise_for_status()  # Raises an HTTPError for bad HTTP responses
+            return response.text.strip()
+        except requests.exceptions.HTTPError as errh:
+            self.__log(f"[get_host_ipv6] HTTP Error: {errh}")
+        except requests.exceptions.ConnectionError as errc:
+            self.__log(f"[get_host_ipv6] Error Connecting: {errc}")
+        except requests.exceptions.Timeout as errt:
+            self.__log(f"[get_host_ipv6] Timeout Error: {errt}")
+        except requests.exceptions.RequestException as err:
+            self.__log(f"[get_host_ipv6] Request Exception: {err}")
+        return None
+
+    def __get_current_ipv4(self):
+        try:
+            response = requests.get(self._get_ipv4_website)
+            response.raise_for_status()  # Raises an HTTPError if the HTTP request returned an unsuccessful status code
+            return response.text.strip()
+        except requests.exceptions.HTTPError as errh:
+            self.__log(f"[get_host_ip] HTTP Error: {errh}")
+        except requests.exceptions.ConnectionError as errc:
+            self.__log(f"[get_host_ip] Error Connecting: {errc}")
+        except requests.exceptions.Timeout as errt:
+            self.__log(f"[get_host_ip] Timeout Error: {errt}")
+        except requests.exceptions.RequestException as err:
+            self.__log(f"[get_host_ip] Request Exception: {err}")
+        return ""
 
 
 if __name__ == '__main__':
