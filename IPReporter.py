@@ -55,8 +55,6 @@ class DDNSClient:
         udpClient = socket(AF_INET, SOCK_DGRAM)
         while True:
             try:
-                self.__log(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}][update_this_server]IP: {self.__target_server}")
-                self.__log(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}][update_this_server]IP: {(self.__target_server)}")
                 this_docker_ipv4 = self.__get_current_ipv4()
                 this_docker_ipv6 = self.__get_current_ipv6()
                 udpClient.sendto((f"{gethostbyname(self.__target_server)},{str(self._can_connect)},{self.__google_username}:{self.__google_password},{self._my_domain}").encode(encoding="utf-8"), (self.__target_server, 7171))
@@ -92,7 +90,7 @@ class DDNSClient:
 
     def __get_current_ipv4(self):
         try:
-            response = requests.get(self._get_ipv4_website)
+            response = requests.get(self._get_ipv4_website,timeout=5)
             response.raise_for_status()  # Raises an HTTPError if the HTTP request returned an unsuccessful status code
             return response.text.strip()
         except requests.exceptions.HTTPError as errh:
