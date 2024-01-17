@@ -9,7 +9,7 @@ on:
 jobs:
   build_cq_qinyupeng_com:
     runs-on: ubuntu-latest
-    environment: DockerLogin
+    environment: CQ
     steps:
       - uses: actions/checkout@v3
       - name: Build the Docker image
