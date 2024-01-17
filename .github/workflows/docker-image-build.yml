@@ -34,7 +34,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build the Docker image
-        run: docker build -t qinbatista/ipreporter${{ vars.CQ_CLIENT }} .
+        run: docker build -t qinbatista/ipreportertest .
             --build-arg google_username="${{ secrets.GOOGLE_USERNAME }}"
             --build-arg google_password="${{ secrets.GOOGLE_PASSWORD }}"
             --build-arg client_domain_name="${{ vars.CQ_CLIENT }}"
