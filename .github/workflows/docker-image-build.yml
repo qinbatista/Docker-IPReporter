@@ -28,7 +28,7 @@ jobs:
       - name: Push
         run: docker push qinbatista/ipreporter${{ vars.CQ_CLIENT }}
 
-  build_cq_qinbatista_com_test:
+  build_timov4:
     runs-on: ubuntu-latest
     environment: CQ
     steps:
