@@ -34,11 +34,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build the Docker image
-        run: docker build -t qinbatista/ipreportertest .
+        run: docker build -t qinbatista/ipreportertest${{ vars.SEVER_DOMAIN_NAME_TIMOV4 }} .
             --build-arg google_username="${{ secrets.GOOGLE_USERNAME }}"
             --build-arg google_password="${{ secrets.GOOGLE_PASSWORD }}"
             --build-arg client_domain_name="${{ vars.CQ_CLIENT }}"
-            --build-arg server_domain_name="${{ vars.SEVER_DOMAIN_NAME_TEST }}"
+            --build-arg server_domain_name="${{ vars.SEVER_DOMAIN_NAME_TIMOV4 }}"
 
       - name: Login to Docker Hub
         uses: docker/login-action@v2
@@ -47,4 +47,4 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Push
-        run: docker push qinbatista/ipreportertest
+        run: docker push qinbatista/ipreportertest${{ vars.SEVER_DOMAIN_NAME_TIMOV4 }}
